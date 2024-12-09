@@ -63,8 +63,11 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  if (queen.x === king.x) return true;
+  if (queen.y === king.y) return true;
+  if (Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)) return true;
+  return false;
 }
 
 /**
@@ -107,8 +110,24 @@ function isIsoscelesTriangle(a, b, c) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  if (num < 1) return '';
+  if (num >= 10) {
+    return `X${convertToRomanNumerals(num - 10)}`;
+  }
+  if (num >= 9) {
+    return `IX${convertToRomanNumerals(num - 9)}`;
+  }
+  if (num >= 5) {
+    return `V${convertToRomanNumerals(num - 5)}`;
+  }
+  if (num >= 4) {
+    return `IV${convertToRomanNumerals(num - 4)}`;
+  }
+  if (num >= 1) {
+    return `I${convertToRomanNumerals(num - 1)}`;
+  }
+  return num;
 }
 
 /**
@@ -284,8 +303,14 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let n = num;
+  while (n !== 0) {
+    const curr = n % 10;
+    if (curr === digit) return true;
+    n = Math.trunc(n / 10);
+  }
+  return false;
 }
 
 /**
@@ -337,8 +362,48 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = new Array(size);
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+  }
+  let rowEnd = size - 1;
+  let colEnd = size - 1;
+  let rowStart = 0;
+  let colStart = 0;
+  let num = 1;
+
+  while (colStart <= colEnd && rowStart <= rowEnd) {
+    for (let i = colStart; i <= colEnd; i += 1) {
+      matrix[rowStart][i] = num;
+      num += 1;
+    }
+
+    rowStart += 1;
+
+    for (let j = rowStart; j <= rowEnd; j += 1) {
+      matrix[j][colEnd] = num;
+      num += 1;
+    }
+
+    colEnd -= 1;
+
+    for (let k = colEnd; k >= colStart; k -= 1) {
+      matrix[rowEnd][k] = num;
+      num += 1;
+    }
+
+    rowEnd -= 1;
+
+    for (let m = rowEnd; m >= rowStart; m -= 1) {
+      matrix[m][colStart] = num;
+      num += 1;
+    }
+
+    colStart += 1;
+  }
+  return matrix;
 }
 
 /**
@@ -356,8 +421,30 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const copy = matrix;
+  const arr = [];
+  for (let i = 0; i < matrix.length; i += 1) {
+    arr[i] = [];
+  }
+
+  const rowEnd = matrix.length - 1;
+  const colEnd = matrix[0].length - 1;
+  const rowStart = 0;
+  const colStart = 0;
+
+  for (let r = rowStart; r <= rowEnd; r += 1) {
+    for (let c = colStart; c <= colEnd; c += 1) {
+      arr[r][c] = matrix[c][r];
+    }
+  }
+
+  for (let r = rowStart; r <= rowEnd; r += 1) {
+    for (let c = colStart; c <= colEnd; c += 1) {
+      copy[r][c] = arr[r][colEnd - c];
+    }
+  }
+  return copy;
 }
 
 /**
@@ -374,8 +461,19 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const copy = arr;
+
+  for (let i = 1; i < copy.length; i += 1) {
+    const current = copy[i];
+    let j = i - 1;
+    while (j >= 0 && copy[j] > current) {
+      copy[j + 1] = copy[j];
+      j -= 1;
+    }
+    copy[j + 1] = current;
+  }
+  return copy;
 }
 
 /**
